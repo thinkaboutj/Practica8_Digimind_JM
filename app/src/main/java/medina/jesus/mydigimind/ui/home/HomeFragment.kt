@@ -1,42 +1,83 @@
 package medina.jesus.mydigimind.ui.home
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
+import android.widget.GridView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import medina.jesus.mydigimind.R
+import medina.jesus.mydigimind.Recordatorio
 import medina.jesus.mydigimind.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var gridView: GridView
+    private lateinit var adapter: GridViewAdapter
+    private val listaRecordatorios = mutableListOf<Recordatorio>()
+    private var inicializada = false
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        gridView = root.findViewById(R.id.gridViewRecordatorios)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        if (!inicializada) {
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            listaRecordatorios.add(Recordatorio("Practice", "Everyday", "17:00"))
+            inicializada = true
         }
+
+        adapter = GridViewAdapter(requireContext(), listaRecordatorios)
+        gridView.adapter = adapter
+
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+
+    private class GridViewAdapter(private val context: Context, private val listaRecordatorios: List<Recordatorio>) : BaseAdapter() {
+
+        override fun getCount(): Int{
+            return listaRecordatorios.size
+        }
+
+        override fun getItem(position: Int): Any {
+            return listaRecordatorios[position]
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+        }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val recordatorio = listaRecordatorios[position]
+            val inflater = LayoutInflater.from(context)
+            val vista = convertView ?: inflater.inflate(R.layout.recordatorio, parent, false)
+
+            val txtNombre: TextView = vista.findViewById(R.id.txtNombreRecordatorio)
+            val txtDias: TextView = vista.findViewById(R.id.txtDiasRecordatorio)
+            val txtTiempo: TextView = vista.findViewById(R.id.txtTiempoRecordatorio)
+
+            txtNombre.text = recordatorio.nombre
+            txtDias.text = recordatorio.dias
+            txtTiempo.text = recordatorio.tiempo
+
+            return vista
+        }
     }
 }
