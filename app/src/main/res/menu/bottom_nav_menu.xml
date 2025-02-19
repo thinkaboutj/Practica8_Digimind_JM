@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/baseline_speaker_notes_24"
+        android:icon="@drawable/iconmaterialspeakernotes"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/baseline_note_add_24"
+        android:icon="@drawable/iconmaterialnoteadd"
         android:title="@string/title_dashboard" />
 
 </menu>
