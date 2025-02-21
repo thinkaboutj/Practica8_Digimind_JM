@@ -10,7 +10,6 @@ import androidx.navigation.ui.setupWithNavController
 import medina.jesus.mydigimind.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
